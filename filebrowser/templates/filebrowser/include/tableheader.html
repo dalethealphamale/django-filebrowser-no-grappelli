@@ -3,11 +3,16 @@
     <tr>
         <!-- ACTIONS -->
         {% comment %}{% if not query.pop %}<th><input type="checkbox" id="action-toggle"></th>{% endif %}{% endcomment %}
+        <th scope="col">
+            <div class="text"><span>{% trans "Actions" %}</span></div>
+            <div class="clear"></div>
+        </th>
         <!-- SELECT -->
         {% if query.pop == "1" %}<th></th>{% endif %}
         {% if query.pop == "2" %}<th></th>{% endif %}
         {% if query.pop == "3" %}<th></th>{% endif %}
         {% if query.pop == "4" %}<th></th>{% endif %}
+        {% if query.pop == "5" %}<th></th>{% endif %}
         <!-- FILETYPE -->
         {% if query.o == "filetype" %}
         <th scope="col" class="sortable sorted {{ query.ot }}ending">
@@ -96,7 +101,7 @@
 
         <!-- EDIT -->
         <th scope="col">
-            <div class="text">&nbsp;</div>
+            <div class="text"><span>{% trans "Edit" %}</span></div>
             <div class="clear"></div>
         </th>
     </tr>
