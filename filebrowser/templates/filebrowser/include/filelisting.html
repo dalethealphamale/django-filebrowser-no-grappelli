@@ -10,10 +10,12 @@
     <tr class="{% cycle 'row1' 'row2' %}{% if fileobject.is_folder %} fb_folder{% endif %}">
 
         <!-- FILESELECT FOR FILEBROWSEFIELD -->
-        {% if query.pop == "1" %}
+        {% if query.pop == "12345" %}
             <td class="fb_icon">
                 {% selectable fileobject.filetype query.type %}
                 {% if selectable %}
+                    <!-- select original -->
+                    <a class="button" href="#" onclick="FileSubmit('{{ fileobject.path }}', '{{ fileobject.url }}', '{{ thumbnail_version.url }}', '{{ fileobject.filetype }}');">{% trans "Select" %}</a>
                     <!-- select versions -->
                     {% if fileobject.filetype == "Image" and settings_var.ADMIN_VERSIONS %}
                         <div class="pulldown-versions-container">
@@ -26,8 +28,6 @@
                             </ul>
                         </div>
                     {% endif %}
-                    <!-- select original -->
-                    <a class="button" href="#" onclick="FileSubmit('{{ fileobject.path }}', '{{ fileobject.url }}', '{{ thumbnail_version.url }}', '{{ fileobject.filetype }}');">{% trans "Select" %}</a>
                 {% else %}
                     &nbsp;
                 {% endif %}
@@ -36,10 +36,12 @@
 
         <!-- FILESELECT FOR RTE/TINYMCE -->
         <!-- we need to use the absolute url here -->
-        {% if query.pop == "2" or query.pop == "4" %}
+        {% if query.pop in "12345" %}
             <td class="fb_icon">
                 {% selectable fileobject.filetype query.type %}
                 {% if selectable %}
+                    <!-- select original -->
+                    <a class="button" href="#" onclick="FileBrowserDialogue.fileSubmit('{{ fileobject.url|escapejs }}');">{% trans "Select" %}</a>
                     <!-- select versions -->
                     {% if fileobject.filetype == "Image" and settings_var.ADMIN_VERSIONS %}
                         <div class="pulldown-versions-container">
@@ -52,8 +54,6 @@
                             </ul>
                         </div>
                     {% endif %}
-                    <!-- select original -->
-                    <a class="button" href="#" onclick="FileBrowserDialogue.fileSubmit('{{ fileobject.url|escapejs }}');">{% trans "Select" %}</a>
                 {% else %}
                     &nbsp;
                 {% endif %}
