@@ -162,6 +162,7 @@ def handle_file_upload(path, file, site):
     try:
         file_path = os.path.join(path, file.name)
         uploadedfile = site.storage.save(file_path, file)
+        prin
     except Exception as inst:
         raise inst
     return uploadedfile
