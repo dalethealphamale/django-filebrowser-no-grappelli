@@ -516,11 +516,16 @@ class FileObject():
         # save version
         try:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY, optimize=(os.path.splitext(version_path)[1] != '.gif'))
+            print('Versions Saved!!')
         except IOError:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY)
+            print('Versions NOT Saved!')
         # remove old version, if any
         if version_path != self.site.storage.get_available_name(version_path):
             self.site.storage.delete(version_path)
+        print("self.site.storage= ", self.site.storage)
+        print("version_path= ", version_path)
+        print("tmpfile= ", tmpfile)
         self.site.storage.save(version_path, tmpfile)
         # set permissions
         if DEFAULT_PERMISSIONS is not None:
