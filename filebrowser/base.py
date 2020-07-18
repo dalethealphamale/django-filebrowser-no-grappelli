@@ -6,6 +6,7 @@ import os
 import platform
 import tempfile
 import time
+import sys
 
 from django.core.files import File
 from django.utils.encoding import force_text
@@ -517,15 +518,20 @@ class FileObject():
         try:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY, optimize=(os.path.splitext(version_path)[1] != '.gif'))
             print('Versions Saved!!')
+            sys.stdout.flush()
         except IOError:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY)
             print('Versions NOT Saved!')
+            sys.stdout.flush()
         # remove old version, if any
         if version_path != self.site.storage.get_available_name(version_path):
             self.site.storage.delete(version_path)
         print("self.site.storage= ", self.site.storage)
+        sys.stdout.flush()
         print("version_path= ", version_path)
+        sys.stdout.flush()
         print("tmpfile= ", tmpfile)
+        sys.stdout.flush()
         self.site.storage.save(version_path, tmpfile)
         # set permissions
         if DEFAULT_PERMISSIONS is not None:
