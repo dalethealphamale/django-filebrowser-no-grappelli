@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import datetime
+import logging
 import mimetypes
 import os
 import platform
@@ -29,6 +30,8 @@ else:
         import ImageFile
 
 from .compat import get_modified_time
+
+logger = logging.getLogger('testLogger')
 
 ImageFile.MAXBLOCK = IMAGE_MAXBLOCK  # default is 64k
 
@@ -517,20 +520,25 @@ class FileObject():
         # save version
         try:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY, optimize=(os.path.splitext(version_path)[1] != '.gif'))
+            logger.info('Versions Saved!!')
             print('Versions Saved!!')
             sys.stdout.flush()
         except IOError:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY)
+            logger.info('Versions NOT Saved!')
             print('Versions NOT Saved!')
             sys.stdout.flush()
         # remove old version, if any
         if version_path != self.site.storage.get_available_name(version_path):
             self.site.storage.delete(version_path)
         print("self.site.storage= ", self.site.storage)
+        logger.info('self.site.storage= %s', self.site.storage)
         sys.stdout.flush()
         print("version_path= ", version_path)
+        logger.info('version_path= %s', version_path)
         sys.stdout.flush()
         print("tmpfile= ", tmpfile)
+        logger.info('tmpfile= %s', tmpfile)
         sys.stdout.flush()
         self.site.storage.save(version_path, tmpfile)
         # set permissions

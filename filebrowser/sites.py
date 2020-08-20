@@ -3,6 +3,7 @@
 import os
 import re
 import json
+import logging
 from time import gmtime, strftime, localtime, time
 
 from django import forms
@@ -39,7 +40,7 @@ from filebrowser.settings import (DIRECTORY, EXTENSIONS, SELECT_FORMATS, ADMIN_V
     OVERWRITE_EXISTING, DEFAULT_PERMISSIONS, UPLOAD_TEMPDIR, ADMIN_CUSTOM
 )
 
-
+logger = logging.getLogger('testLogger')
 
 # This use admin_custom and not admin.sites.site of Django.
 admin_site = import_string(ADMIN_CUSTOM) if ADMIN_CUSTOM else admin_site
@@ -161,7 +162,9 @@ def handle_file_upload(path, file, site):
     uploadedfile = None
     try:
         file_path = os.path.join(path, file.name)
+        logger.info('file_path= %s', file_path)
         uploadedfile = site.storage.save(file_path, file)
+        logger.info('uploadedfile= %s', uploadedfile)
     except Exception as inst:
         raise inst
     return uploadedfile
@@ -579,6 +582,7 @@ class FileBrowserSite(object):
                 path = folder
             else:
                 path = os.path.join(self.directory, folder)
+            logger.info('path= %s', path)
             # we convert the filename before uploading in order
             # to check for existing files/folders
             file_name = convert_filename(filedata.name)
@@ -599,6 +603,10 @@ class FileBrowserSite(object):
 
             signals.filebrowser_pre_upload.send(sender=request, path=folder, file=filedata, site=self)
             uploadedfile = handle_file_upload(path, filedata, site=self)
+
+            logger.info('folder= %s', folder)
+            logger.info('path= %s', path)
+            logger.info('filedata= %s', filedata)
 
             if file_already_exists and OVERWRITE_EXISTING:
                 old_file = smart_text(file_path)
@@ -624,6 +632,7 @@ class FileBrowserSite(object):
                 'temp_filename': temp_filename,
                 'url': f.url,
             }
+            logger.info('Upload ret_json: %s', ret_json)
             return HttpResponse(json.dumps(ret_json), content_type="application/json")
 
 storage = DefaultStorage()
