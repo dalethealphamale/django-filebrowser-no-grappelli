@@ -90,6 +90,7 @@ class FileListing():
             logger.info('string_types= %s', string_types)
             attr = (attr, )
         print("sorted_seq= ", sorted(seq, key=attrgetter(*attr)))
+        logger.info('seq= %s', seq)
         logger.info('sorted_seq= %s', sorted(seq, key=attrgetter(*attr)))
         return sorted(seq, key=attrgetter(*attr))
 
@@ -144,6 +145,7 @@ class FileListing():
         files = self._fileobjects_total
 
         if self.sorting_by:
+            logger.info('files for sorting= %s', files)
             files = self.sort_by_attr(files, self.sorting_by)
         if self.sorting_order == "desc":
             files.reverse()
