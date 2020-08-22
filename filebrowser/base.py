@@ -505,25 +505,33 @@ class FileObject():
         """
 
         tmpfile = File(tempfile.NamedTemporaryFile())
+        logger.info('tmpfile= %s', tempfile)
 
         try:
             f = self.site.storage.open(self.path)
+            logger.info('f= %s', f)
         except IOError:
+            logger.info('Exception!')
             return ""
         im = Image.open(f)
         version_dir, version_basename = os.path.split(version_path)
+        logger.info('version_dir= %s', version_dir)
+        logger.info('version_basename= %s', version_basename)
         root, ext = os.path.splitext(version_basename)
         version = process_image(im, options)
         if not version:
             version = im
+            logger.info('version= %s', version)
         if 'methods' in options:
             for m in options['methods']:
                 if callable(m):
                     version = m(version)
+                    logger.info('version_methods= %s', version)
 
         # IF need Convert RGB
         if ext in [".jpg", ".jpeg"] and version.mode not in ("L", "RGB"):
             version = version.convert("RGB")
+            logger.info('version_converRGB= %s', version)
 
         # save version
         try:
