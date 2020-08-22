@@ -402,16 +402,20 @@ class FileObject():
     @property
     def is_version(self):
         "True if file is a version, false otherwise"
+        logger.info('is_version= %s', self.head.startswith(VERSIONS_BASEDIR))
         return self.head.startswith(VERSIONS_BASEDIR)
 
     @property
     def versions_basedir(self):
         "Main directory for storing versions (either VERSIONS_BASEDIR or site.directory)"
         if VERSIONS_BASEDIR:
+            logger.info('VERSIONS_BASEDIR= %s', VERSIONS_BASEDIR)
             return VERSIONS_BASEDIR
         elif self.site.directory:
+            logger.info('site.directory= %s', self.site.directory)
             return self.site.directory
         else:
+            logger.info('versions_basedir EMPTY!')
             return ""
 
     @property
@@ -453,10 +457,10 @@ class FileObject():
     def versions(self):
         "List of versions (not checking if they actually exist)"
         version_list = []
-        logger.info('version_list= %s', version_list)
         if self.filetype == "Image" and not self.is_version:
             for version in sorted(VERSIONS):
                 version_list.append(os.path.join(self.versions_basedir, self.dirname, self.version_name(version)))
+        logger.info('version_list= %s', version_list)
         return version_list
 
     def admin_versions(self):
@@ -465,6 +469,7 @@ class FileObject():
         if self.filetype == "Image" and not self.is_version:
             for version in ADMIN_VERSIONS:
                 version_list.append(os.path.join(self.versions_basedir, self.dirname, self.version_name(version)))
+        logger.info('admin_version_list= %s', version_list)
         return version_list
 
     def version_name(self, version_suffix, extra_options=None):
@@ -480,6 +485,10 @@ class FileObject():
 
     def version_path(self, version_suffix, extra_options=None):
         "Path to a version (relative to storage location)"  # FIXME: version_path for version?
+        logger.info('version_path= %s', os.path.join(
+                                        self.versions_basedir,
+                                        self.dirname,
+                                        self.version_name(version_suffix, extra_options)))
         return os.path.join(
             self.versions_basedir,
             self.dirname,
