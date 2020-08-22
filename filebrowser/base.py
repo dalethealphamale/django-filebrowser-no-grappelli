@@ -447,6 +447,7 @@ class FileObject():
     def versions(self):
         "List of versions (not checking if they actually exist)"
         version_list = []
+        logger.info('version_list= %s', version_list)
         if self.filetype == "Image" and not self.is_version:
             for version in sorted(VERSIONS):
                 version_list.append(os.path.join(self.versions_basedir, self.dirname, self.version_name(version)))
@@ -488,6 +489,7 @@ class FileObject():
             version_path = self._generate_version(version_path, options)
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
             version_path = self._generate_version(version_path, options)
+        logger.info('version_generate= %s', FileObject(version_path, site=self.site))
         return FileObject(version_path, site=self.site)
 
     def _generate_version(self, version_path, options):
