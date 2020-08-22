@@ -84,7 +84,13 @@ class FileListing():
         """
         from operator import attrgetter
         if isinstance(attr, string_types):  # Backward compatibility hack
+            print("attr= ", attr)
+            logger.info('attr= %s', attr)
+            print("string_types", string_types)
+            logger.info('string_types= %s', string_types)
             attr = (attr, )
+        print("sorted_seq= ", sorted(seq, key=attrgetter(*attr)))
+        logger.info('sorted_seq= %s', sorted(seq, key=attrgetter(*attr)))
         return sorted(seq, key=attrgetter(*attr))
 
     @cached_property
