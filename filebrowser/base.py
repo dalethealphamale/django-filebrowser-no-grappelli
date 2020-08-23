@@ -504,6 +504,7 @@ class FileObject():
         version_path = self.version_path(version_suffix, extra_options)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
+            logg
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
             version_path = self._generate_version(version_path, options)
         logger.info('version_generate= %s', FileObject(version_path, site=self.site))
