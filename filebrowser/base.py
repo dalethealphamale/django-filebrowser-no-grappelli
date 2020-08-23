@@ -504,6 +504,9 @@ class FileObject():
         path = self.path
         options = self._get_options(version_suffix, extra_options)
 
+
+        logger.info('self.site.storage= %s', self.site.storage)
+
         version_path = self.version_path(version_suffix, extra_options)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
@@ -513,7 +516,7 @@ class FileObject():
             logger.info('version_path2= %s', version_path)
         print('version_generate= ', FileObject(version_path, site=self.site))
         print('self.site= ', self.site)
-        logger.info('version_generate= %s', FileObject(version_path, site=self.site))
+        logger.info('FileObject= %s', FileObject(version_path, site=self.site))
         return FileObject(version_path, site=self.site)
 
     def _generate_version(self, version_path, options):
