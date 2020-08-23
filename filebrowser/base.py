@@ -411,6 +411,7 @@ class FileObject():
     def versions_basedir(self):
         "Main directory for storing versions (either VERSIONS_BASEDIR or site.directory)"
         if VERSIONS_BASEDIR:
+            print('VERSIONS_BASEDIR= ', VERSIONS_BASEDIR)
             logger.info('VERSIONS_BASEDIR= %s', VERSIONS_BASEDIR)
             return VERSIONS_BASEDIR
         elif self.site.directory:
@@ -508,6 +509,8 @@ class FileObject():
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
             version_path = self._generate_version(version_path, options)
             logger.info('version_path2= %s', version_path)
+        print('version_generate= ', FileObject(version_path, site=self.site))
+        print('self.site= ', self.site)
         logger.info('version_generate= %s', FileObject(version_path, site=self.site))
         return FileObject(version_path, site=self.site)
 
