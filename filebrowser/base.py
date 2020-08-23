@@ -504,9 +504,10 @@ class FileObject():
         version_path = self.version_path(version_suffix, extra_options)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
-            logg
+            logger.info('version_path1= %s', version_path)
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
             version_path = self._generate_version(version_path, options)
+            logger.info('version_path2= %s', version_path)
         logger.info('version_generate= %s', FileObject(version_path, site=self.site))
         return FileObject(version_path, site=self.site)
 
@@ -515,7 +516,8 @@ class FileObject():
         Generate Version for an Image.
         value has to be a path relative to the storage location.
         """
-
+        logger.info('CALLING _generate_version')
+        logger.info('_generate_version self= %s', self)
         tmpfile = File(tempfile.NamedTemporaryFile())
         logger.info('tmpfile= %s', tempfile)
 
