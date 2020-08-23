@@ -146,11 +146,13 @@ class FileListing():
 
         files = self._fileobjects_total
 
-        if self.sorting_by:
-            logger.info('files for sorting= %s', files)
-            files = self.sort_by_attr(files, self.sorting_by)
-        if self.sorting_order == "desc":
-            files.reverse()
+        # if self.sorting_by:
+        #     logger.info('files for sorting= %s', files)
+        #     files = self.sort_by_attr(files, self.sorting_by)
+        # if self.sorting_order == "desc":
+        #     files.reverse()
+
+        # Do we care about sorting?
 
         self._results_listing_total = len(files)
         return files
