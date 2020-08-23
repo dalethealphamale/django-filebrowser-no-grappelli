@@ -67,6 +67,8 @@ class FileListing():
             from filebrowser.sites import site as default_site
             site = default_site
         self.site = site
+        logger.info('SELF.SITE= %s', self.site)
+
 
     # HELPER METHODS
     # sort_by_attr
