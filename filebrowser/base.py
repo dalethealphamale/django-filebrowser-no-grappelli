@@ -230,11 +230,13 @@ class FileObject():
         if not site:
             from filebrowser.sites import site as default_site
             site = default_site
+            logger.info('FileObject site= %s', site)
         self.site = site
         if platform.system() == 'Windows':
             self.path = path.replace('\\', '/')
         else:
             self.path = path
+            logger.info('FileObject path= %s', site)
         self.head = os.path.dirname(path)
         self.filename = os.path.basename(path)
         self.filename_lower = self.filename.lower()
@@ -507,7 +509,7 @@ class FileObject():
         options = self._get_options(version_suffix, extra_options)
 
 
-        logger.info('self.site.storage= %s', self.site.storage)
+        logger.info('self.site.storage= %s', self.site.storage)        #TODO:  Figure out why this site.storage object isnt getting converted into a FileObject
 
         version_path = self.version_path(version_suffix, extra_options)
         if not self.site.storage.isfile(version_path):
