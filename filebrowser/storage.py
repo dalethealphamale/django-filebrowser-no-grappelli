@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import os
 import shutil
 
@@ -30,7 +28,6 @@ class StorageMixin(object):
     def move(self, old_file_name, new_file_name, allow_overwrite=False):
         """
         Moves safely a file from one location to another.
-
         If allow_ovewrite==False and new_file_name exists, raises an exception.
         """
         raise NotImplementedError()
