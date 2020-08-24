@@ -67,7 +67,7 @@ class FileListing():
             from filebrowser.sites import site as default_site
             site = default_site
         self.site = site
-        logger.info('SELF.SITE= %s', self.site)
+        print('SELF.SITE= ', self.site)
 
 
     # HELPER METHODS
@@ -87,13 +87,10 @@ class FileListing():
         from operator import attrgetter
         if isinstance(attr, string_types):  # Backward compatibility hack
             print("attr= ", attr)
-            logger.info('attr= %s', attr)
             print("string_types", string_types)
-            logger.info('string_types= %s', string_types)
             attr = (attr, )
         print("sorted_seq= ", sorted(seq, key=attrgetter(*attr)))
-        logger.info('seq= %s', seq)
-        logger.info('sorted_seq= %s', sorted(seq, key=attrgetter(*attr)))
+        print('seq= ', seq)l
         return sorted(seq, key=attrgetter(*attr))
 
     @cached_property
@@ -230,13 +227,13 @@ class FileObject():
         if not site:
             from filebrowser.sites import site as default_site
             site = default_site
-            logger.info('FileObject site= %s', site)
         self.site = site
+        print('FileObject site= ', site)
         if platform.system() == 'Windows':
             self.path = path.replace('\\', '/')
         else:
             self.path = path
-            logger.info('FileObject path= %s', site)
+            print('FileObject path= ', path)
         self.head = os.path.dirname(path)
         self.filename = os.path.basename(path)
         self.filename_lower = self.filename.lower()
@@ -410,7 +407,7 @@ class FileObject():
     @property
     def is_version(self):
         "True if file is a version, false otherwise"
-        logger.info('is_version= %s', self.head.startswith(VERSIONS_BASEDIR))
+        print('is_version= ', self.head.startswith(VERSIONS_BASEDIR))
         return self.head.startswith(VERSIONS_BASEDIR)
 
     @property
@@ -418,13 +415,12 @@ class FileObject():
         "Main directory for storing versions (either VERSIONS_BASEDIR or site.directory)"
         if VERSIONS_BASEDIR:
             print('VERSIONS_BASEDIR= ', VERSIONS_BASEDIR)
-            logger.info('VERSIONS_BASEDIR= %s', VERSIONS_BASEDIR)
             return VERSIONS_BASEDIR
         elif self.site.directory:
-            logger.info('site.directory= %s', self.site.directory)
+            print('site.directory= ', self.site.directory)
             return self.site.directory
         else:
-            logger.info('versions_basedir EMPTY!')
+            print('versions_basedir EMPTY!')
             return ""
 
     @property
@@ -469,7 +465,7 @@ class FileObject():
         if self.filetype == "Image" and not self.is_version:
             for version in sorted(VERSIONS):
                 version_list.append(os.path.join(self.versions_basedir, self.dirname, self.version_name(version)))
-        logger.info('version_list= %s', version_list)
+        print('version_list= ', version_list)
         return version_list
 
     def admin_versions(self):
@@ -478,7 +474,7 @@ class FileObject():
         if self.filetype == "Image" and not self.is_version:
             for version in ADMIN_VERSIONS:
                 version_list.append(os.path.join(self.versions_basedir, self.dirname, self.version_name(version)))
-        logger.info('admin_version_list= %s', version_list)
+        print('admin_version_list= ', version_list)
         return version_list
 
     def version_name(self, version_suffix, extra_options=None):
@@ -494,7 +490,7 @@ class FileObject():
 
     def version_path(self, version_suffix, extra_options=None):
         "Path to a version (relative to storage location)"  # FIXME: version_path for version?
-        logger.info('version_path= %s', os.path.join(
+        print('version_path= ', os.path.join(
                                         self.versions_basedir,
                                         self.dirname,
                                         self.version_name(version_suffix, extra_options)))
@@ -509,18 +505,16 @@ class FileObject():
         options = self._get_options(version_suffix, extra_options)
 
 
-        logger.info('self.site.storage= %s', self.site.storage)        #TODO:  Figure out why this site.storage object isnt getting converted into a FileObject
+        print('self.site.storage= ', self.site.storage)        #TODO:  Figure out why this site.storage object isnt getting converted into a FileObject
 
         version_path = self.version_path(version_suffix, extra_options)
+        print('version_path= ', version_path)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
-            logger.info('version_path1= %s', version_path)
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
             version_path = self._generate_version(version_path, options)
-            logger.info('version_path2= %s', version_path)
-        print('version_generate= ', FileObject(version_path, site=self.site))
         print('self.site= ', self.site)
-        logger.info('FileObject= %s', FileObject(version_path, site=self.site))
+        print('version_generate FileObject= ', FileObject(version_path, site=self.site))
         return FileObject(version_path, site=self.site)
 
     def _generate_version(self, version_path, options):
@@ -528,59 +522,54 @@ class FileObject():
         Generate Version for an Image.
         value has to be a path relative to the storage location.
         """
-        logger.info('CALLING _generate_version')
-        logger.info('_generate_version self= %s', self)
+        print('CALLING _generate_version')
+        print('_generate_version self= %s', self)
         tmpfile = File(tempfile.NamedTemporaryFile())
-        logger.info('tmpfile= %s', tempfile)
+        print('tmpfile= ', tempfile)
 
         try:
             f = self.site.storage.open(self.path)
-            logger.info('f= %s', f)
+            print('f= ', f)
         except IOError:
-            logger.info('Exception!')
+            print('exception')
             return ""
         im = Image.open(f)
         version_dir, version_basename = os.path.split(version_path)
-        logger.info('version_dir= %s', version_dir)
-        logger.info('version_basename= %s', version_basename)
+        print('version_dir= ', version_dir)
+        print('version_basename= ', version_basename)
         root, ext = os.path.splitext(version_basename)
         version = process_image(im, options)
         if not version:
             version = im
-            logger.info('version= %s', version)
+            print('version= ', version)
         if 'methods' in options:
             for m in options['methods']:
                 if callable(m):
                     version = m(version)
-                    logger.info('version_methods= %s', version)
+                    print('version_methods= ', version)
 
         # IF need Convert RGB
         if ext in [".jpg", ".jpeg"] and version.mode not in ("L", "RGB"):
             version = version.convert("RGB")
-            logger.info('version_converRGB= %s', version)
+            print('version_converRGB= ', version)
 
         # save version
         try:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY, optimize=(os.path.splitext(version_path)[1] != '.gif'))
-            logger.info('Versions Saved!!')
             print('Versions Saved!!')
             sys.stdout.flush()
         except IOError:
             version.save(tmpfile, format=Image.EXTENSION[ext.lower()], quality=VERSION_QUALITY)
-            logger.info('Versions NOT Saved!')
             print('Versions NOT Saved!')
             sys.stdout.flush()
         # remove old version, if any
         if version_path != self.site.storage.get_available_name(version_path):
             self.site.storage.delete(version_path)
         print("self.site.storage= ", self.site.storage)
-        logger.info('self.site.storage= %s', self.site.storage)
         sys.stdout.flush()
         print("version_path= ", version_path)
-        logger.info('version_path= %s', version_path)
         sys.stdout.flush()
         print("tmpfile= ", tmpfile)
-        logger.info('tmpfile= %s', tmpfile)
         sys.stdout.flush()
         self.site.storage.save(version_path, tmpfile)
         # set permissions
