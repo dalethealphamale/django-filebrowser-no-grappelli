@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 
@@ -7,6 +8,8 @@ from django.utils.encoding import smart_text
 from filebrowser.base import FileObject
 from filebrowser.settings import DEFAULT_PERMISSIONS
 
+
+logger = logging.getLogger('testLogger')
 
 class StorageMixin(object):
     """
@@ -23,6 +26,7 @@ class StorageMixin(object):
         """
         Returns true if name exists and is a regular file.
         """
+        print('StorageMix isfile')
         raise NotImplementedError()
 
     def move(self, old_file_name, new_file_name, allow_overwrite=False):

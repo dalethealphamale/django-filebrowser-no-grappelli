@@ -509,7 +509,7 @@ class FileObject():
         print('self.site.storage= ', self.site.storage)        #TODO:  Figure out why this site.storage object isnt getting converted into a FileObject
 
         version_path = self.version_path(version_suffix, extra_options)
-        print('version_path= ', version_path)
+        print('version_generate version_path= ', version_path)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
