@@ -239,6 +239,7 @@ class FileObject():
         self.filename_lower = self.filename.lower()
         self.filename_root, self.extension = os.path.splitext(self.filename)
         self.mimetype = mimetypes.guess_type(self.filename)
+        print('FileObject(self)= ', self)
 
     def __str__(self):
         return force_text(self.path)

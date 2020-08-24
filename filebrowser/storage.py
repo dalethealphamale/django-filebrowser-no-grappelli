@@ -57,6 +57,7 @@ class FileSystemStorageMixin(StorageMixin):
         return os.path.isdir(self.path(name))
 
     def isfile(self, name):
+        print('FileSystemStorageMixin isfile()= ', os.path.isfile(self.path(name)))
         return os.path.isfile(self.path(name))
 
     def move(self, old_file_name, new_file_name, allow_overwrite=False):
@@ -76,6 +77,7 @@ class FileSystemStorageMixin(StorageMixin):
 class S3BotoStorageMixin(StorageMixin):
 
     def isfile(self, name):
+        print('S3BotoStorageMixin isfile()= ', self.exists(name))
         return self.exists(name)
 
     def isdir(self, name):
