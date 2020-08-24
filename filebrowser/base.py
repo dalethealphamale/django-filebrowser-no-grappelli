@@ -513,6 +513,7 @@ class FileObject():
         print('self.site.storage.isfile= ', self.site.storage.isfile(version_path))
         print('modified time = ', get_modified_time(self.site.storage, path))
         print('vs modified time = ', get_modified_time(self.site.storage, version_path))
+        version_path = self._generate_version(version_path, options)
         if not self.site.storage.isfile(version_path):
             version_path = self._generate_version(version_path, options)
         elif get_modified_time(self.site.storage, path) > get_modified_time(self.site.storage, version_path):
